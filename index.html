@@ -240,6 +240,56 @@
         .deco-3 { bottom: 15%; left: 10%; animation-delay: 1.4s; }
         .deco-4 { bottom: 15%; right: 10%; animation-delay: 1.5s; }
 
+        /* 悬浮倒计时小窗口 */
+        .floating-countdown {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.98) 0%, rgba(255, 165, 0, 0.98) 100%);
+            border-radius: 15px;
+            padding: 20px 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            z-index: 100;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            animation: floatPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes floatPulse {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            }
+            50% {
+                transform: translateY(-5px) scale(1.02);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        .floating-countdown-title {
+            font-size: 16px;
+            color: #8B0000;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .floating-countdown-timer {
+            font-size: 28px;
+            color: #cc0000;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+
+        .floating-countdown-subtitle {
+            font-size: 14px;
+            color: #8B0000;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
         /* 响应式设计 */
         @media (max-width: 768px) {
             .lantern-text {
@@ -279,22 +329,35 @@
         <div class="lantern-instruction">点击灯笼 · 开启惊喜</div>
     </div>
 
+    <!-- 悬浮倒计时小窗口 -->
+    <div class="floating-countdown" id="floatingCountdown">
+        <div class="floating-countdown-title">⏰ 领取年货倒计时</div>
+        <div class="floating-countdown-timer" id="floatingTimer">加载中...</div>
+        <div class="floating-countdown-subtitle">Vicky姐的牛肉礼包</div>
+    </div>
+
     <!-- 祝福内容 -->
     <div class="blessing-content" id="blessingContent">
-        <div class="decoration deco-1">🎊</div>
-        <div class="decoration deco-2">🎉</div>
+        <div class="decoration deco-1">🐴</div>
+        <div class="decoration deco-2">🐂</div>
         <div class="decoration deco-3">🧧</div>
         <div class="decoration deco-4">🎁</div>
 
-        <div class="blessing-title">🎊 新年快乐 🎊</div>
+        <div class="blessing-title">🐴 马年大吉 · 马到成功 🐴</div>
         <div class="blessing-message">
             亲爱的小伙伴们：<br>
             <br>
-            新春佳节即将来临<br>
-            Vicky姐为大家精心准备了<br>
-            满满的年货礼包🎁<br>
+            马年新春即将来临<br>
+            祝大家龙马精神、一马当先<br>
             <br>
-            记得及时领取哦！
+            🐂 Vicky姐为大家精心准备了 🐂<br>
+            <strong style="font-size: 32px; color: #FF6B6B;">特级牛肉礼包</strong><br>
+            <br>
+            寓意：<strong>越来越牛！</strong><br>
+            愿大家在新的一年里<br>
+            事业牛气冲天、生活牛转乾坤！<br>
+            <br>
+            记得及时领取哦！🎁
         </div>
 
         <div class="countdown-section">
@@ -311,7 +374,7 @@
         // 创建飘落元素
         function createFallingItems() {
             const container = document.getElementById('fallingContainer');
-            const items = ['福', '💰', '🧧', '✨', '💎', '🎊'];
+            const items = ['福', '💰', '🧧', '✨', '🐴', '🐂', '🎊', '马', '牛'];
             const itemCount = 30;
 
             for (let i = 0; i < itemCount; i++) {
@@ -365,6 +428,7 @@
 
                 if (distance < 0) {
                     document.getElementById('countdownTimer').textContent = '年货已可领取！';
+                    document.getElementById('floatingTimer').textContent = '快来领取！';
                     return;
                 }
 
@@ -373,8 +437,9 @@
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                document.getElementById('countdownTimer').textContent =
-                    `${days}天 ${hours}时 ${minutes}分 ${seconds}秒`;
+                const timeString = `${days}天 ${hours}时 ${minutes}分 ${seconds}秒`;
+                document.getElementById('countdownTimer').textContent = timeString;
+                document.getElementById('floatingTimer').textContent = timeString;
             }
 
             updateCountdown();
@@ -384,6 +449,7 @@
         // 初始化
         window.addEventListener('load', () => {
             createFallingItems();
+            startCountdown(); // 页面加载时就开始倒计时
         });
     </script>
 </body>
